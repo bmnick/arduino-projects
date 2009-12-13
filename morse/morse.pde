@@ -1,8 +1,10 @@
 /*
-  Blink
+  Morse
  
- Turns on an LED on for one second, then off for one second, repeatedly.
- 
+ Reads info from serial input and buffers it until it can be displayed.
+ It then reads from the buffer and blinks an led with the morse code of the 
+ input.
+  
  The circuit:
  * LED connected from digital pin 13 to ground.
  
@@ -11,11 +13,8 @@
  
  
  Created 1 June 2005
- By David Cuartielles
- 
- http://arduino.cc/en/Tutorial/Blink
- 
- based on an orginal by H. Barragan for the Wiring i/o board
+ By Ben Nicholas
+ Adapted from Blink example included with Arduino.
  
  */
 
@@ -52,6 +51,7 @@ void loop()
   }
 }
 
+// Take the buffer in it's current state, and display it over the LED
 void outputBuffer()
 {
   for (int i = 0; i < bufpos; i++)
@@ -61,17 +61,20 @@ void outputBuffer()
   clrBuffer();
 }
 
+// Reset the buffer without overriding the data
 void clrBuffer()
 {
   bufpos = 0;
 }
 
+// Add the argument to the next position in the buffer
 void addToBuffer(char toAdd)
 {
   buffer[bufpos] = toAdd;
   bufpos++;
 }
 
+// blink the LED to output the morse code version of the argument
 void morse(char input)
 {
  switch (input)
